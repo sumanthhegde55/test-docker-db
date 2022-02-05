@@ -1,30 +1,23 @@
 const express = require("express");
 const app = express();
-
-const PORT = 8089;
-
+const cors = require('cors');
+const { PORT = 8038} = process.env;
 const connectDb = require("./src/connection");
-const User = require("./src/User.model");
+const Book = require("./src/User.model");
 
-app.get("/users", async (req, res) => {
-    const users = await User.find();
-  
-    res.json(users);
-  });
-  
-  app.get("/user-create", async (req, res) => {
-    const user = new User({ username: "userTest" });
-  
-    await user.save().then(() => console.log("User created"));
-  
-    res.send("User created \n");
+app.get("/books", async (req, res) => {
+    const books = await Book.find({});
+    console.log("books : " ,books);
+    res.json(books);
   });
 
+  app.use(cors());
+
+  
   app.listen(PORT, function() {
     console.log(`Listening on ${PORT}`);
-  
     connectDb().then(() => {
-      console.log("MongoDb connected");
+        console.log("MongoDb is connected");
     });
   });
   
